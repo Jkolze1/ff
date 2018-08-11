@@ -1,76 +1,48 @@
-var userData = require("../data/friends");
+// Pull in required dependencies
+var path = require('path');
 
-
+// Import the list of friend entries
+var friends = require('../data/friends.js');
 module.exports = function(app) {
+	// console.log('___ENTER apiRoutes.js___');
+	app.get('/api/friends', function(req, res) {
+		res.json(friends);
+	});
 
-  app.get("/api/friends", function(req, res) {
-    res.json(userData);
-  });
+	// Adds new friend entry
+	app.post('/api/friends', function(req, res) {
+		var userInput = req.body;
+		var userResponses = userInput.scores;
+	
 
-  var comparisonUserTotalScore = 0;
+		// Compute best friend match
+		var matchName = '';
+		var matchImage = '';
+		var totalDifference = 10000; // Make the initial value big for comparison
 
-  var friendScores = [];
+		// Examine all existing friends in the list
+		for (var i = 0; i < friends.length; i++) {
+			// console.log('friend = ' + JSON.stringify(friends[i]));
 
+			// Compute differenes for each question
+			var diff = 0;
+			for (var j = 0; j < userResponses.length; j++) {
+				diff += Math.abs(friends[i].scores[j] - userResponses[j]);
+			}
+			// console.log('diff = ' + diff);
 
-  // API POST Requests
-  app.post("/api/friends", function(req, res) {
+			// If lowest difference, record the friend match
+			if (diff < totalDifference) {
+				totalDifference = diff;
+				matchName = friends[i].name;
+				matchImage = friends[i].photo;
+			}
+		}
 
-    // Stores scores
-    var currentUserScores = req.body.scores;
+		// Add new user
+		friends.push(userInput);
 
-    console.log("Current user scores: " + currentUserScores);
-
-    // Determine the user's most compatible friend.
-    for (var i = 0; i < userData.length; i++) {
-
-      // Convert each user's results in to an array of numbers.
-      var comparisonUserScores = userData[i].scores;
-
-      // Find total difference between current user and each user.
-      comparisonUserTotalScore = calculateUserCompatibilityScore(currentUserScores, comparisonUserScores);
-
-      // Build up array of user compatibility scores.
-      friendScores.push(comparisonUserTotalScore);
-
-    }
-
-    console.log("Array of friend scores: " + friendScores);
-
-    var index = 0;
-    var value = friendScores[0];
-    for (var i = 0; i < friendScores.length; i++) {
-      console.log("Value of item in array: " + friendScores[i]);
-      if (friendScores[i] < value) {
-        value = friendScores[i];
-        index = i;
-      }
-    }
-// Console log
-    console.log("Best friend name: " + userData[index].name);
-
-
-    res.send(userData[index]);
-
-    // Push new user to user array.
-    userData.push(req.body);
-
-  });
-};
-
-var totalDifference = 0;
-
-// Total diffrence
-function calculateUserCompatibilityScore(currentUserScores, comparisonUserScores) {
-
-  // Reset the total difference counter each time function called.
-  totalDifference = 0;
-
-  for (var i = 0; i < currentUserScores.length; i++) {
-
-    totalDifference+=Math.abs(currentUserScores[i] - comparisonUserScores[i]);
-  }
-
-  console.log("Final total difference for friend: " + totalDifference);
-
-  return totalDifference;
+		// Send appropriate response
+		res.json({status: 'OK', matchName: matchName, matchImage: matchImage});
+	});
 };

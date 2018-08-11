@@ -1,11 +1,17 @@
+// Pull in required dependencies
+var path = require('path');
+
+// Export HTML routes
 module.exports = function(app) {
+	// console.log('___ENTER htmlRoutes.js___');
 
-  app.get("/survey", function(req, res) {
-    res.sendFile(path.join(__dirname, "./app/public/survey.html"));
-  });
+	// Home page
+	app.get('/', function(req, res) {
+		res.sendFile(path.join(__dirname, '../public/home.html'));
+	});
 
-  // If no matching route is found default to home
-  app.use("/index.html", function(req, res) {
-    res.sendFile(path.join(__dirname, './app/public/index.html'));
-  });
+	// Survey page
+	app.get('/survey', function(req, res) {
+		res.sendFile(path.join(__dirname, '../public/survey.html'));
+	});
 };
