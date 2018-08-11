@@ -1,0 +1,23 @@
+{
+  "name": "friendfinder",
+  "version": "0.0.1",
+  "description": "Compatibility-based friend finder application using node express and other goodies",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jkolze1/Friend-finder.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jkolze1/Friend-finder/issues"
+  },
+  "homepage": "https://github.com/Jkolze1/Friend-finder/blob/master/README.md",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2"
+  }
+}
