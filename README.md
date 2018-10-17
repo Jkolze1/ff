@@ -2,8 +2,6 @@
 
 
 # Overview <br>
-
-In this activity, you'll build a compatibility-based "FriendFinder" application -- basically a dating app. This full-stack site will take in results from your users' surveys, then compare their answers with those from other users. The app will then display the name and picture of the user with the best overall match. 
+Friend Finder application is meant to simulate a simple dating app. The application was made using Node.js and Express server on the back end and Bootstrap on the front end.<br>
 
 https://friendfiner.herokuapp.com/
-<br>
